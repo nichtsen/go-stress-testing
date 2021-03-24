@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"go-stress-testing/model"
+	"strings"
 )
 
 /***************************  返回值为json  ********************************/
@@ -38,16 +39,21 @@ func WebSocketJson(request *model.Request, seq string, msg []byte) (code int, is
 		fmt.Printf("请求结果 json.Unmarshal msg:%s err:%v", string(msg), err)
 	} else {
 
-		if seq != responseJson.Seq {
-			code = model.ParseError
-			fmt.Println("请求和返回seq不一致 ~请求:", seq, responseJson.Seq, string(msg))
-		} else {
-			code = responseJson.Response.Code
-			// body 中code返回200为返回数据成功
-			if code == 200 {
-				isSucceed = true
-			}
+		// if seq != responseJson.Seq {
+		// 	code = model.ParseError
+		// 	fmt.Println("请求和返回seq不一致 ~请求:", seq, responseJson.Seq, string(msg))
+		// } else {
+		// 	code = responseJson.Response.Code
+		// 	// body 中code返回200为返回数据成功
+		// 	if code == 200 {
+		// 		isSucceed = true
+		// 	}
+		// }
+		if !strings.Contains(string(msg), "OK") {
+			fmt.Println("响应:", string(msg))
 		}
+		code = 200
+		isSucceed = true
 	}
 
 	// 开启调试模式

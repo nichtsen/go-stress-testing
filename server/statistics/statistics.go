@@ -9,6 +9,8 @@ package statistics
 
 import (
 	"fmt"
+	"log"
+	"runtime"
 	"sort"
 	"strings"
 	"sync"
@@ -120,17 +122,17 @@ func ReceivingResults(concurrent uint64, ch <-chan *model.RequestResults, wg *sy
 
 	calculateData(concurrent, processingTime, requestTime, maxTime, minTime, successNum, failureNum, chanIdLen, errCode, receivedBytes)
 
-	fmt.Printf("\n\n")
+	log.Printf("\n\n")
 
-	fmt.Println("*************************  结果 stat  ****************************")
-	fmt.Println("处理协程数量:", concurrent)
+	log.Println("*************************  结果 stat  ****************************")
+	log.Println("处理协程数量:", concurrent)
 	// fmt.Println("处理协程数量:", concurrent, "程序处理总时长:", fmt.Sprintf("%.3f", float64(processingTime/concurrent)/1e9), "秒")
-	fmt.Println("请求总数（并发数*请求数 -c * -n）:", successNum+failureNum, "总请求时间:", fmt.Sprintf("%.3f", float64(requestTime)/1e9),
+	log.Println("请求总数（并发数*请求数 -c * -n）:", successNum+failureNum, "总请求时间:", fmt.Sprintf("%.3f", float64(requestTime)/1e9),
 		"秒", "successNum:", successNum, "failureNum:", failureNum)
 
-	fmt.Println("*************************  结果 end   ****************************")
+	log.Println("*************************  结果 end   ****************************")
 
-	fmt.Printf("\n\n")
+	log.Printf("\n\n")
 }
 
 // 计算数据
@@ -170,14 +172,14 @@ func calculateData(concurrent, processingTime, requestTime, maxTime, minTime, su
 
 // 打印表头信息
 func header() {
-	fmt.Printf("\n\n")
+	log.Printf("\n\n")
 	// 打印的时长都为毫秒 总请数
-	fmt.Println("─────┬───────┬───────┬───────┬────────┬────────┬────────┬────────┬────────┬────────┬────────")
-	result := fmt.Sprintf(" 耗时│ 并发数│ 成功数│ 失败数│   qps  │最长耗时│最短耗时│平均耗时│下载字节│字节每秒│ 错误码")
-	fmt.Println(result)
+	log.Println("─────┬───────┬───────┬───────┬────────┬────────┬────────┬────────┬────────┬────────┬───────┬───────")
+	result := fmt.Sprintf(" 耗时│ 并发数│ 成功数│ 失败数│   qps  │最长耗时│最短耗时│平均耗时│下载字节│字节每秒│ 错误码|协程数")
+	log.Println(result)
 	// result = fmt.Sprintf("耗时(s)  │总请求数│成功数│失败数│QPS│最长耗时│最短耗时│平均耗时│错误码")
 	// fmt.Println(result)
-	fmt.Println("─────┼───────┼───────┼───────┼────────┼────────┼────────┼────────┼────────┼────────┼────────")
+	log.Println("─────┼───────┼───────┼───────┼────────┼────────┼────────┼────────┼────────┼────────┼───────┼───────")
 
 	return
 }
@@ -205,13 +207,14 @@ func table(successNum, failureNum uint64, errCode map[int]int, qps, averageTime,
 		receivedBytesStr = p.Sprintf("%d", receivedBytes)
 		speedStr = p.Sprintf("%d", speed)
 	}
-
+	p := make([]runtime.StackRecord, 0, 1024)
+	n, _ := runtime.GoroutineProfile(p)
 	// 打印的时长都为毫秒
-	result := fmt.Sprintf("%4.0fs│%7d│%7d│%7d│%8.2f│%8.2f│%8.2f│%8.2f│%8s│%8s│%v",
+	result := fmt.Sprintf("%4.0fs│%7d│%7d│%7d│%8.2f│%8.2f│%8.2f│%8.2f│%8s│%8s│ %v|%5d",
 		requestTimeFloat, chanIdLen, successNum, failureNum, qps, maxTimeFloat, minTimeFloat, averageTime,
 		receivedBytesStr, speedStr,
-		printMap(errCode))
-	fmt.Println(result)
+		printMap(errCode), n)
+	log.Println(result)
 
 	return
 }
@@ -229,6 +232,18 @@ func printMap(errCode map[int]int) (mapStr string) {
 	sort.Strings(mapArr)
 
 	mapStr = strings.Join(mapArr, ";")
+
+	return
+}
+
+func printkey(errCode map[int]int) (mapStr string) {
+
+	var (
+		mapArr []string
+	)
+	for _, v := range errCode {
+		mapArr = append(mapArr, fmt.Sprintf("%d", v))
+	}
 
 	return
 }

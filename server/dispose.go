@@ -13,9 +13,13 @@ import (
 	"go-stress-testing/server/client"
 	"go-stress-testing/server/golink"
 	"go-stress-testing/server/statistics"
-	"go-stress-testing/server/verify"
+
 	"sync"
 	"time"
+
+	"go-stress-testing/server/verify"
+
+	"golang.org/x/net/context"
 )
 
 const (
@@ -34,13 +38,15 @@ func init() {
 }
 
 // 处理函数
-func Dispose(concurrency, totalNumber uint64, request *model.Request) {
+func Dispose(concurrency, totalNumber, extraJsonLength uint64, request *model.Request) {
 
 	// 设置接收数据缓存
 	ch := make(chan *model.RequestResults, 1000)
+	ctx, cancel := context.WithCancel(context.Background())
 	var (
 		wg          sync.WaitGroup // 发送数据完成
 		wgReceiving sync.WaitGroup // 数据处理完成
+		//isStop      chan struct{}
 	)
 
 	wgReceiving.Add(1)
@@ -54,6 +60,11 @@ func Dispose(concurrency, totalNumber uint64, request *model.Request) {
 			go golink.Http(i, ch, totalNumber, &wg, request)
 
 		case model.FormTypeWebSocket:
+			// isStop = make(chan struct{}, 0)
+			var str string
+			if extraJsonLength > 0 {
+				str = utils.randString(extraJsonLength)
+			}
 
 			switch connectionMode {
 			case 1:
@@ -65,8 +76,9 @@ func Dispose(concurrency, totalNumber uint64, request *model.Request) {
 
 					continue
 				}
+				worker := golink.NewWorker(ch, i, totalNumber, str, &wg, request, *ws)
 
-				go golink.WebSocket(i, ch, totalNumber, &wg, request, ws)
+				go worker.Run(ctx)
 			case 2:
 				// 并发建立长链接
 				go func(i uint64) {
@@ -79,7 +91,9 @@ func Dispose(concurrency, totalNumber uint64, request *model.Request) {
 						return
 					}
 
-					golink.WebSocket(i, ch, totalNumber, &wg, request, ws)
+					worker := golink.NewWorker(ch, i, totalNumber, str, &wg, request, *ws)
+
+					go worker.Run(ctx)
 				}(i)
 
 				// 注意:时间间隔太短会出现连接失败的报错 默认连接时长:20毫秒(公网连接)
@@ -111,6 +125,9 @@ func Dispose(concurrency, totalNumber uint64, request *model.Request) {
 	// 延时1毫秒 确保数据都处理完成了
 	time.Sleep(1 * time.Millisecond)
 	close(ch)
+	cancel()
+	// wait a little while for all goroutines to quit
+	time.Sleep(20 * time.Second)
 
 	// 数据全部处理完成了
 	wgReceiving.Wait()
