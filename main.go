@@ -10,8 +10,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"go-stress-testing/model"
-	"go-stress-testing/server"
+	"github.com/nichtsen/go-stress-testing/model"
+	"github.com/nichtsen/go-stress-testing/server"
 	"io"
 	"log"
 	"os"
