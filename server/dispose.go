@@ -9,10 +9,15 @@ package server
 
 import (
 	"fmt"
-	"go-stress-testing/model"
-	"go-stress-testing/server/client"
-	"go-stress-testing/server/golink"
-	"go-stress-testing/server/statistics"
+
+	"github.com/nichtsen/go-stress-testing/server/statistics"
+
+	"github.com/nichtsen/go-stress-testing/server/client"
+	"github.com/nichtsen/go-stress-testing/server/golink"
+
+	"go-stress-testing/utils"
+
+	"github.com/nichtsen/go-stress-testing/model"
 
 	"sync"
 	"time"
@@ -63,7 +68,7 @@ func Dispose(concurrency, totalNumber, extraJsonLength uint64, request *model.Re
 			// isStop = make(chan struct{}, 0)
 			var str string
 			if extraJsonLength > 0 {
-				str = utils.randString(extraJsonLength)
+				str = utils.RandString(extraJsonLength)
 			}
 
 			switch connectionMode {

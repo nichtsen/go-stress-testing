@@ -1,10 +1,9 @@
 module go-stress-testing
 
-go 1.14
+go 1.15
 
 require (
-	github.com/golang/protobuf v1.4.2
-	golang.org/x/net v0.0.0-20190724013045-ca1201d0de80
-	golang.org/x/text v0.3.0
-	google.golang.org/grpc v1.35.0
+	github.com/nichtsen/go-stress-testing v1.0.2
+	golang.org/x/net v0.0.0-20210324051636-2c4c8ecb7826
+	google.golang.org/grpc v1.36.0
 )

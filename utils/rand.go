@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func randString(n int) string {
+func RandString(n int) string {
 	letterRunes := []rune("abcdefghijklmnopqrstuvwxyz")
 	b := make([]rune, n)
 	for i := range b {
@@ -15,7 +15,7 @@ func randString(n int) string {
 	return string(b)
 }
 
-func rbyte(n int) {
+func Rbyte(n int) {
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	s := r.Perm(n)
 
