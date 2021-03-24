@@ -13,9 +13,9 @@ import (
 	"sync"
 	"time"
 
-	"go-stress-testing/heper"
-	"go-stress-testing/model"
-	"go-stress-testing/server/client"
+	"github.com/nichtsen/go-stress-testing/heper"
+	"github.com/nichtsen/go-stress-testing/model"
+	"github.com/nichtsen/go-stress-testing/server/client"
 )
 
 // Grpc grpc 接口请求

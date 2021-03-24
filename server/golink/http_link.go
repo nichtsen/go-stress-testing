@@ -10,8 +10,8 @@ package golink
 import (
 	"sync"
 
-	"go-stress-testing/model"
-	"go-stress-testing/server/client"
+	"github.com/nichtsen/go-stress-testing/model"
+	"github.com/nichtsen/go-stress-testing/server/client"
 )
 
 // http go link

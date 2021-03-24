@@ -10,8 +10,9 @@ package verify
 import (
 	"encoding/json"
 	"fmt"
-	"go-stress-testing/model"
 	"strings"
+
+	"github.com/nichtsen/go-stress-testing/model"
 )
 
 /***************************  返回值为json  ********************************/

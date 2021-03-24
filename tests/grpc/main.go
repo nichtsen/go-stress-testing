@@ -10,10 +10,11 @@ package main
 import (
 	"context"
 	"fmt"
-	pb "go-stress-testing/proto"
-	"google.golang.org/grpc"
 	"log"
 	"net"
+
+	pb "github.com/nichtsen/go-stress-testing/proto"
+	"google.golang.org/grpc"
 )
 
 const (

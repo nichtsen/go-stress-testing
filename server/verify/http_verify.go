@@ -12,10 +12,11 @@ import (
 	"compress/gzip"
 	"encoding/json"
 	"fmt"
-	"go-stress-testing/model"
 	"io"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/nichtsen/go-stress-testing/model"
 )
 
 // 处理gzip压缩
