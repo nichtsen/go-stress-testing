@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 
-	pb "github.com/nichtsen/go-stress-testing/protobuf"
+	pb "github.com/nichtsen/go-stress-testing/xproto"
 
 	"github.com/nichtsen/go-stress-testing/heper"
 	"github.com/nichtsen/go-stress-testing/model"

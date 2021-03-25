@@ -13,7 +13,7 @@ import (
 	"log"
 	"net"
 
-	pb "github.com/nichtsen/go-stress-testing/protobuf"
+	pb "github.com/nichtsen/go-stress-testing/xproto"
 
 	"google.golang.org/grpc"
 )

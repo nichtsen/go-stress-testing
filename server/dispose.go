@@ -15,14 +15,14 @@ import (
 	"github.com/nichtsen/go-stress-testing/server/client"
 	"github.com/nichtsen/go-stress-testing/server/golink"
 
-	"go-stress-testing/utils"
+	"github.com/nichtsen/go-stress-testing/utils"
 
 	"github.com/nichtsen/go-stress-testing/model"
 
 	"sync"
 	"time"
 
-	"go-stress-testing/server/verify"
+	"github.com/nichtsen/go-stress-testing/server/verify"
 
 	"golang.org/x/net/context"
 )
@@ -68,7 +68,7 @@ func Dispose(concurrency, totalNumber, extraJsonLength uint64, request *model.Re
 			// isStop = make(chan struct{}, 0)
 			var str string
 			if extraJsonLength > 0 {
-				str = utils.RandString(extraJsonLength)
+				str = utils.RandString(int(extraJsonLength))
 			}
 
 			switch connectionMode {
