@@ -14,6 +14,7 @@ import (
 	"net"
 
 	pb "github.com/nichtsen/go-stress-testing/protobuf"
+
 	"google.golang.org/grpc"
 )
 
