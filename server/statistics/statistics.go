@@ -16,7 +16,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/nichtsen/o-stress-testing/model"
+	"github.com/nichtsen/go-stress-testing/model"
 
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"

@@ -74,7 +74,7 @@ func send(request *model.Request) (bool, int, uint64, int64) {
 	newRequest := getRequest(request)
 	// newRequest := request
 
-	resp, requestTime, err := client.HttpRequest(newRequest.Method, newRequest.Url, newRequest.GetBody(), newRequest.Headers, newRequest.Timeout)
+	resp, err := client.HttpRequest(newRequest.Method, newRequest.Url, newRequest.GetBody(), newRequest.Headers, newRequest.Timeout)
 	// requestTime := uint64(heper.DiffNano(startTime))
 	if err != nil {
 		errCode = model.RequestErr // 请求错误

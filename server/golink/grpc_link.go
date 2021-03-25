@@ -9,9 +9,10 @@ package golink
 
 import (
 	"context"
-	pb "go-stress-testing/proto"
 	"sync"
 	"time"
+
+	pb "github.com/nichtsen/go-stress-testing/protobuf"
 
 	"github.com/nichtsen/go-stress-testing/heper"
 	"github.com/nichtsen/go-stress-testing/model"

@@ -9,12 +9,13 @@ package client
 
 import (
 	"crypto/tls"
-	"go-stress-testing/heper"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/nichtsen/go-stress-testing/heper"
 )
 
 var logErr = log.New(os.Stderr, "", 0)
