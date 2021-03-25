@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package protobuf;
 
-option go_package = "github.com/nichtsen/go-stress-testing/protobuf";
+// option go_package = "github.com/nichtsen/go-stress-testing/protobuf";
 
 // ApiServer api 接口
 service ApiServer {
