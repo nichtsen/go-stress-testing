@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package protobuf;
+package proto;
 
 // ApiServer api 接口
 service ApiServer {
